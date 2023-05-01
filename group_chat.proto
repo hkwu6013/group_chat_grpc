@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package group_chat;
+
+service GroupChat{
+    rpc StartChat (stream Message) returns (stream Message);
+}
+
+message Message{
+    string user = 1;
+    string body = 2;
+}
