@@ -23,6 +23,9 @@ class GroupChatImpl final: public GroupChat::Service{
  public: 
   Status StartChat(ServerContext* context,
                    ServerReaderWriter<Message, Message>* stream){
+    // TODO: fetch the client's username from context and add it to the usernames
+    
+    // TODO: Send a message to clients specifying the other users in the room
     {
       // register the new user stream
       std::unique_lock<std::mutex> lock(mu_);
@@ -55,6 +58,7 @@ class GroupChatImpl final: public GroupChat::Service{
     return Status::OK;
   }
  private:
+  // std::vector<std::string> usernames;
   std::vector<ServerReaderWriter<Message, Message>*> streams;
   std::mutex mu_;
 };

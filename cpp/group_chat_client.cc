@@ -30,6 +30,7 @@ class GroupChatClient {
   };
   void Chat(){
     ClientContext context;
+    context.AddMetadata("username", username);
     std::shared_ptr<ClientReaderWriter<Message, Message>> stream(
       stub_->StartChat(&context)
     );
