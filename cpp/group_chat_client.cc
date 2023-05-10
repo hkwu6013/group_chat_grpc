@@ -38,7 +38,11 @@ class GroupChatClient {
     std::thread sender_thread(&GroupChatClient::Sender, this, stream);
     Message msg;
     while (stream->Read(&msg)){
+
+      std::cout << '\r' << std::string(10+username.size(),' ')
+      << '\r';
       std::cout << "[" << msg.user() << "]: " <<msg.body() << std::endl;
+      std::cout<<"You ("<<username<<")"<<": "<<std::flush;
     }
     grpc::Status status = stream->Finish();
     stop_flag = true;
@@ -54,6 +58,7 @@ class GroupChatClient {
     Message msg;
     msg.set_user(username);
     while (!stop_flag){
+      std::cout<<"You (" << username << ")" <<": "<<std::flush;
       std::getline(std::cin, input);
       if (input == "!quit") break;
       msg.set_body(input);

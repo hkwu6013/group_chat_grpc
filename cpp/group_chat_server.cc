@@ -49,7 +49,7 @@ class GroupChatImpl final: public GroupChat::Service{
         ss << "Welcome! You are the first in the room";
       }
       ss << "!";
-      msg.set_user("Server");
+      msg.set_user("GROUP CHAT SERVER");
       msg.set_body(ss.str());
       stream -> Write(msg);
       msg.set_body("New user " + std::string(usr.data(), usr.length())
