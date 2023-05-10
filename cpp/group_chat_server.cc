@@ -74,7 +74,7 @@ class GroupChatImpl final: public GroupChat::Service{
       streams.erase(std::remove(streams.begin(), streams.end(), stream), 
                     streams.end());
       usrs.erase(std::remove(usrs.begin(), usrs.end(), usr), usrs.end());
-      msg.set_user("Server");
+      msg.set_user("GROUP CHAT SERVER");
       msg.set_body(std::string(usr.data(), usr.size()) + " left the room.");
       broad_cast(msg, stream);
     }
