@@ -1,4 +1,4 @@
-export PKG_CONFIG_PATH := /home/hkwu6013/.local/lib/pkgconfig:\
+export PKG_CONFIG_PATH := $(HOME)/.local/lib/pkgconfig:\
 													$(PKG_CONFIG_PATH)
 
 CXX = g++

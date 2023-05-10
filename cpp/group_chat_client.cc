@@ -1,3 +1,4 @@
+#include <atomic>
 #include <iostream>
 #include <memory>
 #include <string>
@@ -26,7 +27,7 @@ ABSL_FLAG(std::string, user, "YouKnowWho", "Enter your name.");
 class GroupChatClient {
  public:
   GroupChatClient(std::shared_ptr<Channel> channel, std::string user)
-    : stub_(GroupChat::NewStub(channel)), username(user){
+    : stub_(GroupChat::NewStub(channel)), username(user), stop_flag(false){
   };
   void Chat(){
     ClientContext context;
@@ -39,7 +40,12 @@ class GroupChatClient {
     while (stream->Read(&msg)){
       std::cout << "[" << msg.user() << "]: " <<msg.body() << std::endl;
     }
+    grpc::Status status = stream->Finish();
+    stop_flag = true;
     sender_thread.join();
+    if (!status.ok()){
+      std::cerr << "Chat failed!" << status.error_message() << std::endl;
+    }
     return;
   }
  private:
@@ -47,7 +53,7 @@ class GroupChatClient {
     std::string input;
     Message msg;
     msg.set_user(username);
-    while (true){
+    while (!stop_flag){
       std::getline(std::cin, input);
       if (input == "!quit") break;
       msg.set_body(input);
@@ -58,6 +64,7 @@ class GroupChatClient {
   }
   std::string username;
   std::unique_ptr<GroupChat::Stub> stub_;
+  std::atomic_bool stop_flag;
 };
 int main(int argc, char** argv){
   absl::ParseCommandLine(argc, argv);
