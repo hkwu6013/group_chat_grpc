@@ -9,7 +9,7 @@
 #include <grpcpp/server.h>
 #include <grpcpp/server_builder.h>
 #include <grpcpp/server_context.h>
-#include "../build/group_chat.grpc.pb.h"
+#include "../generated/group_chat.grpc.pb.h"
 
 
 using grpc::Status;
@@ -57,16 +57,15 @@ class GroupChatImpl final: public GroupChat::Service{
       broad_cast(msg, stream);
     }
 
-    
-    
     while (stream->Read(&msg)){
       std::unique_lock<std::mutex> lock(mu_);
 
-      std::cout << "Received message: " << std::endl << msg.body() 
-      << std::endl << "from " << msg.user()
-      << ". Broadcasting..." << std::endl;
+      std::cout << "Received message: " << "\"" 
+      << msg.body() << "\" " << "from " << msg.user()
+      << ". Broadcasting to all other users ..." << std::endl;
       // broadcast
       broad_cast(msg, stream);
+      std::cout << "Broadcast completed!" << std::endl;
     }
     // remove the current stream
     {

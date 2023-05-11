@@ -12,7 +12,7 @@
 
 #include "absl/flags/flag.h"
 #include "absl/flags/parse.h"
-#include "../build/group_chat.grpc.pb.h"
+#include "../generated/group_chat.grpc.pb.h"
 
 using grpc::ClientContext;
 using grpc::ClientReaderWriter;

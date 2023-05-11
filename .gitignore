@@ -1,2 +1,5 @@
 build/*
 .vscode/*
+generated/*
+bin/*
+src/*.o
